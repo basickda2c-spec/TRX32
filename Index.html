@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Graphic P402</title>
+<meta name="description" content="cargo.site">
+
+<!-- ==========================================================
+     Tipografía: el sitio original usa fuentes propietarias de
+     Cargo (Monument Grotesk / Marist). Aquí usamos alternativas
+     libres de Google Fonts con una apariencia muy cercana.
+     Podés cambiarlas por las que quieras.
+========================================================== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,400;0,500;1,400&family=Newsreader:ital@0;1&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   1) VARIABLES — todo lo que probablemente quieras editar
+   ========================================================= */
+:root{
+  --bg: #8e8989;                 /* fondo general del sitio */
+  --ink: rgba(0,0,0,0.85);       /* color de texto principal */
+  --ink-soft: rgba(0,0,0,0.4);   /* color de texto secundario (captions) */
+  --ink-faint: rgba(255,255,255,0.85); /* subtítulos claros sobre el fondo gris */
+  --rule: rgba(0,0,0,0.85);      /* color de las líneas <hr> */
+
+  --font-display: "Archivo", Helvetica, Arial, sans-serif; /* reemplaza Monument Grotesk */
+  --font-caption: "Newsreader", Georgia, serif;            /* reemplaza Marist */
+
+  --gutter: 1.25rem;
+  --page-pad: 1.5rem;
+  --nav-h: 4.5rem;
+  --footer-h: 3.25rem;
+}
+
+*{ box-sizing: border-box; }
+
+html,body{
+  margin:0;
+  padding:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-display);
+  -webkit-font-smoothing:antialiased;
+}
+
+a{ color:inherit; text-decoration:none; border-bottom:1px solid transparent; }
+a:hover{ border-bottom-color: currentColor; }
+a:active{ opacity:.7; }
+
+hr{
+  background:var(--rule);
+  border:0;
+  height:1px;
+  margin:1rem 0;
+}
+
+h1,h2{ margin:0; font-weight:400; font-family:var(--font-display); }
+
+h2{
+  font-size:1.5rem;
+  line-height:1.2;
+}
+
+.subtle{ color:var(--ink-faint); }
+
+.caption{
+  font-family:var(--font-caption);
+  font-style:italic;
+  font-size:1rem;
+  color:var(--ink-soft);
+  display:block;
+  margin-top:.5em;
+}
+
+ul{ margin:0; padding-left:1.5em; }
+
+/* =========================================================
+   2) LAYOUT GENERAL
+   ========================================================= */
+.site{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+
+/* Nav superior — fijo, semi-transparente sobre el gris */
+.nav{
+  position:sticky;
+  top:0;
+  z-index:50;
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--gutter);
+  padding: 1.25rem var(--page-pad);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(2px);
+}
+.nav .brand{ flex:1 1 160px; }
+.nav .title-block{ flex:1.4 1 260px; }
+.nav .subtitle-block{ flex:1 1 220px; }
+.nav .links{ flex:0 1 auto; margin-left:auto; text-align:right; white-space:nowrap; }
+
+/* Contenido central */
+.pages{ flex:1 0 auto; }
+
+.page{
+  padding: var(--page-pad);
+}
+
+/* Footer inferior — fijo, semi-transparente sobre el gris */
+.footer{
+  position:sticky;
+  bottom:0;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  gap:var(--gutter);
+  padding: 1.25rem var(--page-pad);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+}
+.footer .copyright{ flex:0 0 auto; }
+.footer .top-link{ flex:1 1 auto; }
+.footer .clock{ flex:0 0 auto; margin-left:auto; font-variant-numeric: tabular-nums; }
+
+/* =========================================================
+   3) HERO / BIG TITLE
+   ========================================================= */
+.hero{
+  min-height: calc(100vh - var(--nav-h) - var(--footer-h));
+  display:flex;
+  align-items:flex-end;
+  justify-content:flex-end;
+  padding: var(--page-pad) 2.5rem var(--page-pad) var(--page-pad);
+}
+.hero h1{
+  text-align:right;
+  line-height:0.95;
+  letter-spacing:-0.03em;
+  font-size: clamp(2.5rem, 9vw, 8rem);
+  max-width: 60%;
+}
+
+/* =========================================================
+   4) PROYECTOS (Project 01 / Project 02)
+   ========================================================= */
+.project{ padding: var(--page-pad); }
+
+.project-header{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--gutter);
+  margin-bottom: 2.5rem;
+}
+.project-header .col-title{ flex:1 1 180px; }
+.project-header .col-type{ flex:1.3 1 220px; }
+.project-header .col-meta{ flex:1.6 1 260px; line-height:1.5; }
+
+.project-body{
+  display:flex;
+  flex-wrap:wrap;
+  gap: var(--gutter);
+}
+.project-body .col-text{
+  flex: 1 1 260px;
+  max-width: 26rem;
+  line-height:1.5;
+}
+.project-body .col-text b{ font-weight:600; }
+.project-body .col-text p{ margin:0 0 1em 0; }
+.project-body .col-text p:last-child{ margin-bottom:0; }
+
+.gallery{
+  flex: 2 1 480px;
+  display:flex;
+  flex-wrap:wrap;
+  gap: var(--gutter);
+  align-items:flex-start;
+}
+.gallery figure{ margin:0; }
+.gallery img{
+  display:block;
+  width:100%;
+  height:auto;
+}
+.gallery .g-main{ flex: 1 1 60%; max-width: 60%; }
+.gallery .g-sub{ flex: 1 1 18%; max-width: calc(20% - var(--gutter)); }
+
+@media (max-width: 720px){
+  .gallery .g-main{ max-width:100%; flex-basis:100%; }
+  .gallery .g-sub{ max-width: calc(50% - var(--gutter)/2); flex-basis: calc(50% - var(--gutter)/2); }
+}
+
+/* =========================================================
+   5) ABOUT
+   ========================================================= */
+.about{ padding: var(--page-pad); padding-bottom: 6rem; }
+.about-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap: var(--gutter);
+}
+.about-grid .col-brand{ flex:1 1 200px; }
+.about-grid .col-groups{ flex:1.4 1 240px; line-height:1.5; }
+.about-grid .col-groups ul{ list-style:none; padding:0; margin: .75em 0 0 0; }
+.about-grid .col-point{ flex:2 1 380px; line-height:1.55; }
+.about-grid .col-point h2{ margin-bottom:.25em; }
+.about-grid .col-point p{ margin:0 0 1em 0; }
+.about-grid .col-point .indent{ padding-left: 1.5em; font-style: italic; }
+
+/* =========================================================
+   6) RESPONSIVE — nav / footer apilados en mobile
+   ========================================================= */
+@media (max-width: 640px){
+  .nav{ flex-direction:column; }
+  .nav .links{ text-align:left; margin-left:0; }
+  .footer{ flex-wrap:wrap; }
+  .footer .clock{ margin-left:0; }
+}
+</style>
+</head>
+<body>
+<div class="site">
+
+  <!-- =========================================================
+       NAV SUPERIOR
+       Editable: nombre de marca, título/edición, texto derecho,
+       links de contacto.
+  ========================================================== -->
+  <header class="nav">
+    <div class="brand">Cargo® Demo</div>
+
+    <div class="title-block">
+      <h2>Thomas S. Kuhn</h2><br>
+      <h2><span class="subtle">Second Edition, Enlarged</span><br>Volume II&nbsp; Number 2</h2>
+    </div>
+
+    <div class="subtitle-block">
+      Foundations of the<br>
+      Unity of Science<br><br>
+      Toward an<br>
+      International Encyclopedia<br>
+      of Unified Science
+    </div>
+
+    <div class="links">
+      <a href="mailto:hello@example.com">Email</a>, <a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram ↗</a>
+    </div>
+  </header>
+
+  <main class="pages">
+
+    <!-- =========================================================
+         HERO / TÍTULO GRANDE
+         Editable: título principal.
+    ========================================================== -->
+    <section class="hero">
+      <h1>The<br>Structure of<br>Scientific<br>Revolutions</h1>
+    </section>
+
+    <!-- =========================================================
+         PROYECTO 01
+         Editable: título de proyecto, tipo, fecha/meta, texto
+         descriptivo y las 3 imágenes (1 grande + 2 con caption).
+    ========================================================== -->
+    <section class="project" id="project-01">
+      <hr>
+      <div class="project-header">
+        <div class="col-title"><h2>Project 01</h2></div>
+        <div class="col-type"><h2 class="subtle">Type 0-24-DK</h2></div>
+        <div class="col-meta">
+          Praesent Pellentesque<br>
+          March 2047<br>
+          Aenean nisl nulla, porttitor suscipit
+        </div>
+      </div>
+
+      <div class="project-body">
+        <div class="col-text">
+          <b>Integer et placerat est, eu imperdiet neque. Proin sit amet purus metus. In nec efficitur justo, sed maximus est.</b>
+          <p>Ut ornare arcu eros, at condimentum enim imperdiet vitae. Morbi lorem augue, commodo vel ipsum ac, sollicitudin placerat urna. Praesent sit amet mauris tortor. Duis ac risus sem. Fusce at elementum justo, ac mollis turpis. Pellentesque accumsan purus ut tristique bibendum. Nam feugiat sit amet enim in vehicula.</p>
+          <p>Praesent bibendum a elit non efficitur. Etiam et velit vitae quam aliquet fermentum. Quisque sit amet nulla dictum, cursus erat a, tempus est. Sed laoreet, magna eget mattis tincidunt, felis tellus vestibulum augue, in lobortis mauris risus eu nunc.</p>
+        </div>
+
+        <div class="gallery">
+          <figure class="g-main">
+            <img src="images/project-01-main.jpg" alt="Project 01 — imagen principal">
+          </figure>
+          <figure class="g-sub">
+            <img src="images/project-01-fig1.jpg" alt="Project 01 — figura 1">
+            <figcaption class="caption">Figure 1</figcaption>
+          </figure>
+          <figure class="g-sub">
+            <img src="images/project-01-fig2.jpg" alt="Project 01 — figura 2">
+            <figcaption class="caption">Figure 2</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         PROYECTO 02
+         Misma estructura que Project 01.
+    ========================================================== -->
+    <section class="project" id="project-02">
+      <hr>
+      <div class="project-header">
+        <div class="col-title"><h2>Project 02</h2></div>
+        <div class="col-type"><h2 class="subtle">Type 0-24-DK</h2></div>
+        <div class="col-meta">
+          Praesent Pellentesque<br>
+          March 2047<br>
+          Aenean nisl nulla, porttitor suscipit
+        </div>
+      </div>
+
+      <div class="project-body">
+        <div class="col-text">
+          <b>Integer et placerat est, eu imperdiet neque. Proin sit amet purus metus. In nec efficitur justo, sed maximus est.</b>
+          <p>Ut ornare arcu eros, at condimentum enim imperdiet vitae. Morbi lorem augue, commodo vel ipsum ac, sollicitudin placerat urna. Praesent sit amet mauris tortor. Duis ac risus sem. Fusce at elementum justo, ac mollis turpis. Pellentesque accumsan purus ut tristique bibendum. Nam feugiat sit amet enim in vehicula.</p>
+          <p>Praesent bibendum a elit non efficitur. Etiam et velit vitae quam aliquet fermentum. Quisque sit amet nulla dictum, cursus erat a, tempus est. Sed laoreet, magna eget mattis tincidunt, felis tellus vestibulum augue, in lobortis mauris risus eu nunc.</p>
+        </div>
+
+        <div class="gallery">
+          <figure class="g-main">
+            <img src="images/project-02-main.jpg" alt="Project 02 — imagen principal">
+          </figure>
+          <figure class="g-sub">
+            <img src="images/project-02-fig1.jpg" alt="Project 02 — figura 1">
+            <figcaption class="caption">Figure 1</figcaption>
+          </figure>
+          <figure class="g-sub">
+            <img src="images/project-02-fig2.jpg" alt="Project 02 — figura 2">
+            <figcaption class="caption">Figure 2</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         ABOUT
+         Editable: marca, lista de "Groups", textos "Point"/"Line".
+    ========================================================== -->
+    <section class="about" id="about">
+      <hr>
+      <div class="about-grid">
+        <div class="col-brand">
+          <h2>Cargo® Demo</h2>
+        </div>
+
+        <div class="col-groups">
+          <h2 class="subtle">Groups</h2>
+          <b>Aliquam Faucibus Tellus</b><br>
+          Vestibulum Ultricies<br>
+          Suspendisse Aenean
+          <ul>
+            <li>Turpis Nec</li>
+            <li>Varius Scelerisque</li>
+            <li>Est Est</li>
+            <li>Ornare enim</li>
+            <li>Sit Amet Facilisis</li>
+            <li>Dante Metus</li>
+            <li>Dosuere sapien</li>
+          </ul>
+        </div>
+
+        <div class="col-point">
+          <h2>Point</h2>
+          <p>Euro tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Lectus quam id leo in vitae turpis massa. Cursus euismod quis viverra nibh cras. Nunc scelerisque viverra mauris in aliquam sem fringilla ut. Felis imperdiet proin fermentum leo vel orci porta. Purus in mollis nunc sed id. Scelerisque varius morbi enim nunc. Semper auctor neque vitae tempus quam pellentesque nec. Feugiat vivamus at augue eget. Urna id volutpat lacus laoreet non curabitur gravida. Habitant morbi tristique senectus et netus. Eget dolor morbi non arcu.</p>
+          <p class="indent">Fames ac turpis egestas integer eget aliquet nibh praesent tristique. Quis hendrerit dolor magna eget. Nec sagittis aliquam malesuada bibendum arcu. Nibh ipsum consequat nisl vel pretium. Euro tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Lectus quam id leo in vitae turpis massa. Urna id volutpat lacus laoreet non curabitur gravida. Habitant morbi tristique senectus et netus. Eget dolor morbi non arcu.</p>
+
+          <h2>Line</h2>
+          <p>Euro tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Lectus quam id leo in vitae turpis massa. Cursus euismod quis viverra nibh cras. Nunc scelerisque viverra mauris in aliquam sem fringilla ut. Felis imperdiet proin fermentum leo vel orci porta. Purus in mollis nunc sed id. Scelerisque varius morbi enim nunc. Semper auctor neque vitae tempus quam pellentesque nec. Feugiat vivamus at augue eget. Urna id volutpat lacus laoreet non curabitur gravida. Habitant morbi tristique senectus et netus. Eget dolor morbi non arcu.</p>
+          <p class="indent">Fames ac turpis egestas integer eget aliquet nibh praesent tristique. Quis hendrerit dolor magna eget. Nec sagittis aliquam malesuada bibendum arcu. Nibh ipsum consequat nisl vel pretium. Euro tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Lectus quam id leo in vitae turpis massa. Urna id volutpat lacus laoreet non curabitur gravida. Habitant morbi tristique senectus et netus. Eget dolor morbi non arcu.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =========================================================
+       FOOTER INFERIOR
+       Editable: copyright. El reloj se actualiza solo.
+  ========================================================== -->
+  <footer class="footer">
+    <div class="copyright">© Cargo '42</div>
+    <a class="top-link" href="#top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">↑ Top</a>
+    <div class="clock" id="clock">00:00:00</div>
+  </footer>
+
+</div>
+
+<script>
+// Reloj digital de 24 horas, se actualiza cada segundo.
+function updateClock(){
+  var now = new Date();
+  var pad = function(n){ return n.toString().padStart(2,'0'); };
+  document.getElementById('clock').textContent =
+    pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds());
+}
+updateClock();
+setInterval(updateClock, 1000);
+</script>
+</body>
+</html>
