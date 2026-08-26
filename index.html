@@ -31,6 +31,7 @@
   --font-caption: "Newsreader", Georgia, serif;            /* reemplaza Marist */
 
   --gutter: 1.25rem;
+  --col-gap: 50px;         /* espacio entre el texto y el eje de las imágenes */
   --page-pad: 1.5rem;
   --nav-h: 4.5rem;
   --footer-h: 3.25rem;
@@ -96,27 +97,33 @@ ul{ margin:0; padding-left:1.5em; }
    todas las secciones => los "cortes" de columna caen siempre
    en el mismo píxel, sin importar el ancho de pantalla.
 
-   col-a  = columnas 1 a 5   (lo que antes era "brand / col-title / col-text / col-brand")
-   col-b  = columnas 6 a 9   (arranca justo donde arranca .gallery / .g-main)
-   col-c  = columnas 10 a 12
-   col-bc = columnas 6 a 12  (para elementos que ocupan b+c, como .gallery)
+   col-a  = columna de texto, ancho FIJO (min(100%, 26rem)) — nunca más
+            ancha que el texto que contiene, así no queda aire muerto.
+   col-b  = arranca justo después de col-a + un gap fijo de 50px;
+            es donde arranca .gallery / .g-main.
+   col-c  = columna angosta a la derecha (meta, subtítulo, "Point/Line").
+   col-bc = col-b + col-c juntas (para elementos que ocupan ambas,
+            como .gallery, que así gana todo el espacio sobrante).
 ========================================================== */
 .grid12{
   display:grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: var(--gutter);
+  grid-template-columns: minmax(0, 26rem) 1.3fr 1fr;
+  column-gap: var(--col-gap);
+  row-gap: var(--gutter);
 }
-.col-a{ grid-column: 1 / 6; }
-.col-b{ grid-column: 6 / 10; }
-.col-c{ grid-column: 10 / 13; }
-.col-bc{ grid-column: 6 / 13; }
+.col-a{ grid-column: 1; }
+.col-b{ grid-column: 2; }
+.col-c{ grid-column: 3; }
+.col-bc{ grid-column: 2 / 4; }
 
 @media (max-width: 720px){
   .grid12{ grid-template-columns: 1fr; }
   .col-a, .col-b, .col-c, .col-bc{ grid-column: 1 / -1; }
 }
 
-/* Nav superior — fijo, semi-transparente sobre el gris */
+/* Nav superior — fijo (sticky) solo en desktop; en mobile es un
+   bloque normal para que no quede "trabado" tapando el resto del
+   sitio al hacer scroll (ver punto 6 más abajo). */
 .nav{
   position:sticky;
   top:0;
@@ -232,6 +239,22 @@ ul{ margin:0; padding-left:1.5em; }
 @media (max-width: 640px){
   .footer{ flex-wrap:wrap; }
   .footer .clock{ margin-left:0; }
+}
+
+/* En mobile el nav se apila (grid a 1 columna) y se vuelve muy alto;
+   si sigue "sticky" queda trabado arriba tapando el resto del sitio
+   al scrollear. Acá lo volvemos un bloque normal y los links dejan
+   de estar en posición absoluta para no superponerse con "Cargo® Demo". */
+@media (max-width: 720px){
+  .nav{
+    position: relative;
+    top: auto;
+  }
+  .nav .links{
+    position: static;
+    text-align: left;
+    margin-top: .5rem;
+  }
 }
 
 /* =========================================================
