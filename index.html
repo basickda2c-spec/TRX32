@@ -87,22 +87,51 @@ ul{ margin:0; padding-left:1.5em; }
   min-height:100vh;
 }
 
+/* =========================================================
+   2.1) GRID COMPARTIDO
+   Este es el sistema que garantiza que ciertos bloques de
+   texto queden alineados con el borde izquierdo de la imagen
+   principal (project-01-main.jpg / .g-main).
+   12 columnas iguales, mismo --gutter y mismo --page-pad en
+   todas las secciones => los "cortes" de columna caen siempre
+   en el mismo píxel, sin importar el ancho de pantalla.
+
+   col-a  = columnas 1 a 5   (lo que antes era "brand / col-title / col-text / col-brand")
+   col-b  = columnas 6 a 9   (arranca justo donde arranca .gallery / .g-main)
+   col-c  = columnas 10 a 12
+   col-bc = columnas 6 a 12  (para elementos que ocupan b+c, como .gallery)
+========================================================== */
+.grid12{
+  display:grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--gutter);
+}
+.col-a{ grid-column: 1 / 6; }
+.col-b{ grid-column: 6 / 10; }
+.col-c{ grid-column: 10 / 13; }
+.col-bc{ grid-column: 6 / 13; }
+
+@media (max-width: 720px){
+  .grid12{ grid-template-columns: 1fr; }
+  .col-a, .col-b, .col-c, .col-bc{ grid-column: 1 / -1; }
+}
+
 /* Nav superior — fijo, semi-transparente sobre el gris */
 .nav{
   position:sticky;
   top:0;
   z-index:50;
-  display:flex;
-  flex-wrap:wrap;
-  gap:var(--gutter);
   padding: 1.25rem var(--page-pad);
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(2px);
 }
-.nav .brand{ flex:1 1 160px; }
-.nav .title-block{ flex:1.4 1 260px; }
-.nav .subtitle-block{ flex:1 1 220px; }
-.nav .links{ flex:0 1 auto; margin-left:auto; text-align:right; white-space:nowrap; }
+.nav .links{
+  position:absolute;
+  top:1.25rem;
+  right:var(--page-pad);
+  text-align:right;
+  white-space:nowrap;
+}
 
 /* Contenido central */
 .pages{ flex:1 0 auto; }
@@ -150,22 +179,14 @@ ul{ margin:0; padding-left:1.5em; }
 .project{ padding: var(--page-pad); }
 
 .project-header{
-  display:flex;
-  flex-wrap:wrap;
-  gap:var(--gutter);
   margin-bottom: 2.5rem;
 }
-.project-header .col-title{ flex:1 1 180px; }
-.project-header .col-type{ flex:1.3 1 220px; }
-.project-header .col-meta{ flex:1.6 1 260px; line-height:1.5; }
+.project-header .col-meta{ line-height:1.5; }
 
 .project-body{
-  display:flex;
-  flex-wrap:wrap;
-  gap: var(--gutter);
+  align-items:flex-start;
 }
 .project-body .col-text{
-  flex: 1 1 260px;
   max-width: 26rem;
   line-height:1.5;
 }
@@ -174,7 +195,6 @@ ul{ margin:0; padding-left:1.5em; }
 .project-body .col-text p:last-child{ margin-bottom:0; }
 
 .gallery{
-  flex: 2 1 480px;
   display:flex;
   flex-wrap:wrap;
   gap: var(--gutter);
@@ -185,6 +205,7 @@ ul{ margin:0; padding-left:1.5em; }
   display:block;
   width:100%;
   height:auto;
+  cursor: zoom-in;
 }
 .gallery .g-main{ flex: 1 1 60%; max-width: 60%; }
 .gallery .g-sub{ flex: 1 1 18%; max-width: calc(20% - var(--gutter)); }
@@ -198,27 +219,92 @@ ul{ margin:0; padding-left:1.5em; }
    5) ABOUT
    ========================================================= */
 .about{ padding: var(--page-pad); padding-bottom: 6rem; }
-.about-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap: var(--gutter);
-}
-.about-grid .col-brand{ flex:1 1 200px; }
-.about-grid .col-groups{ flex:1.4 1 240px; line-height:1.5; }
+.about-grid .col-groups{ line-height:1.5; }
 .about-grid .col-groups ul{ list-style:none; padding:0; margin: .75em 0 0 0; }
-.about-grid .col-point{ flex:2 1 380px; line-height:1.55; }
+.about-grid .col-point{ line-height:1.55; }
 .about-grid .col-point h2{ margin-bottom:.25em; }
 .about-grid .col-point p{ margin:0 0 1em 0; }
 .about-grid .col-point .indent{ padding-left: 1.5em; font-style: italic; }
 
 /* =========================================================
-   6) RESPONSIVE — nav / footer apilados en mobile
+   6) RESPONSIVE — footer apilado en mobile
    ========================================================= */
 @media (max-width: 640px){
-  .nav{ flex-direction:column; }
-  .nav .links{ text-align:left; margin-left:0; }
   .footer{ flex-wrap:wrap; }
   .footer .clock{ margin-left:0; }
+}
+
+/* =========================================================
+   7) LIGHTBOX — ampliar imágenes con doble clic
+   ========================================================= */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:none;
+  padding: 2.5rem;
+  background:#1c1c1c;
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,.14) 1px, transparent 1px);
+  background-size: 25% 33.333%;
+}
+.lightbox.open{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.lb-stage{
+  max-width:90%;
+  max-height:80vh;
+}
+.lb-stage img{
+  display:block;
+  max-width:100%;
+  max-height:80vh;
+  width:auto;
+  height:auto;
+  margin:0 auto;
+}
+.lb-close,
+.lb-prev,
+.lb-next{
+  position:fixed;
+  width:2.75rem;
+  height:2.75rem;
+  border-radius:50%;
+  border:none;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:1.4rem;
+  line-height:1;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition: background .15s ease;
+}
+.lb-close:hover,
+.lb-prev:hover,
+.lb-next:hover{ background:rgba(255,255,255,.18); }
+.lb-close{ top:1.5rem; right:1.5rem; }
+.lb-prev{ left:1.5rem; top:50%; transform:translateY(-50%); }
+.lb-next{ right:1.5rem; top:50%; transform:translateY(-50%); }
+.lb-caption{
+  position:fixed;
+  left:2.5rem;
+  bottom:2rem;
+  color:rgba(255,255,255,.65);
+  font-family:var(--font-display);
+  font-size:.9rem;
+  line-height:1.5;
+}
+@media (max-width:640px){
+  .lightbox{ padding:1rem; }
+  .lb-close{ top:1rem; right:1rem; }
+  .lb-prev{ left:.5rem; }
+  .lb-next{ right:.5rem; }
+  .lb-caption{ left:1rem; bottom:1rem; }
 }
 </style>
 </head>
@@ -229,16 +315,18 @@ ul{ margin:0; padding-left:1.5em; }
        NAV SUPERIOR
        Editable: nombre de marca, título/edición, texto derecho,
        links de contacto.
+       El bloque "title-block" (Párrafo 1) usa col-b, por lo
+       que arranca en la misma columna que .g-main.
   ========================================================== -->
-  <header class="nav">
-    <div class="brand">Cargo® Demo</div>
+  <header class="nav grid12">
+    <div class="brand col-a">Cargo® Demo</div>
 
-    <div class="title-block">
+    <div class="title-block col-b">
       <h2>Thomas S. Kuhn</h2><br>
       <h2><span class="subtle">Second Edition, Enlarged</span><br>Volume II&nbsp; Number 2</h2>
     </div>
 
-    <div class="subtitle-block">
+    <div class="subtitle-block col-c">
       Foundations of the<br>
       Unity of Science<br><br>
       Toward an<br>
@@ -265,27 +353,28 @@ ul{ margin:0; padding-left:1.5em; }
          PROYECTO 01
          Editable: título de proyecto, tipo, fecha/meta, texto
          descriptivo y las 3 imágenes (1 grande + 2 con caption).
+         "col-type" (Párrafo 2) usa col-b => alineado con .g-main.
     ========================================================== -->
     <section class="project" id="project-01">
       <hr>
-      <div class="project-header">
-        <div class="col-title"><h2>Project 01</h2></div>
-        <div class="col-type"><h2 class="subtle">Type 0-24-DK</h2></div>
-        <div class="col-meta">
+      <div class="project-header grid12">
+        <div class="col-title col-a"><h2>Project 01</h2></div>
+        <div class="col-type col-b"><h2 class="subtle">Type 0-24-DK</h2></div>
+        <div class="col-meta col-c">
           Praesent Pellentesque<br>
           March 2047<br>
           Aenean nisl nulla, porttitor suscipit
         </div>
       </div>
 
-      <div class="project-body">
-        <div class="col-text">
+      <div class="project-body grid12">
+        <div class="col-text col-a">
           <b>Integer et placerat est, eu imperdiet neque. Proin sit amet purus metus. In nec efficitur justo, sed maximus est.</b>
           <p>Ut ornare arcu eros, at condimentum enim imperdiet vitae. Morbi lorem augue, commodo vel ipsum ac, sollicitudin placerat urna. Praesent sit amet mauris tortor. Duis ac risus sem. Fusce at elementum justo, ac mollis turpis. Pellentesque accumsan purus ut tristique bibendum. Nam feugiat sit amet enim in vehicula.</p>
           <p>Praesent bibendum a elit non efficitur. Etiam et velit vitae quam aliquet fermentum. Quisque sit amet nulla dictum, cursus erat a, tempus est. Sed laoreet, magna eget mattis tincidunt, felis tellus vestibulum augue, in lobortis mauris risus eu nunc.</p>
         </div>
 
-        <div class="gallery">
+        <div class="gallery col-bc">
           <figure class="g-main">
             <img src="images/project-01-main.jpg" alt="Project 01 — imagen principal">
           </figure>
@@ -304,27 +393,28 @@ ul{ margin:0; padding-left:1.5em; }
     <!-- =========================================================
          PROYECTO 02
          Misma estructura que Project 01.
+         "col-type" (Párrafo 3) usa col-b => alineado con .g-main.
     ========================================================== -->
     <section class="project" id="project-02">
       <hr>
-      <div class="project-header">
-        <div class="col-title"><h2>Project 02</h2></div>
-        <div class="col-type"><h2 class="subtle">Type 0-24-DK</h2></div>
-        <div class="col-meta">
+      <div class="project-header grid12">
+        <div class="col-title col-a"><h2>Project 02</h2></div>
+        <div class="col-type col-b"><h2 class="subtle">Type 0-24-DK</h2></div>
+        <div class="col-meta col-c">
           Praesent Pellentesque<br>
           March 2047<br>
           Aenean nisl nulla, porttitor suscipit
         </div>
       </div>
 
-      <div class="project-body">
-        <div class="col-text">
+      <div class="project-body grid12">
+        <div class="col-text col-a">
           <b>Integer et placerat est, eu imperdiet neque. Proin sit amet purus metus. In nec efficitur justo, sed maximus est.</b>
           <p>Ut ornare arcu eros, at condimentum enim imperdiet vitae. Morbi lorem augue, commodo vel ipsum ac, sollicitudin placerat urna. Praesent sit amet mauris tortor. Duis ac risus sem. Fusce at elementum justo, ac mollis turpis. Pellentesque accumsan purus ut tristique bibendum. Nam feugiat sit amet enim in vehicula.</p>
           <p>Praesent bibendum a elit non efficitur. Etiam et velit vitae quam aliquet fermentum. Quisque sit amet nulla dictum, cursus erat a, tempus est. Sed laoreet, magna eget mattis tincidunt, felis tellus vestibulum augue, in lobortis mauris risus eu nunc.</p>
         </div>
 
-        <div class="gallery">
+        <div class="gallery col-bc">
           <figure class="g-main">
             <img src="images/project-02-main.jpg" alt="Project 02 — imagen principal">
           </figure>
@@ -343,15 +433,16 @@ ul{ margin:0; padding-left:1.5em; }
     <!-- =========================================================
          ABOUT
          Editable: marca, lista de "Groups", textos "Point"/"Line".
+         "col-groups" (Párrafo 4) usa col-b => alineado con .g-main.
     ========================================================== -->
     <section class="about" id="about">
       <hr>
-      <div class="about-grid">
-        <div class="col-brand">
+      <div class="about-grid grid12">
+        <div class="col-brand col-a">
           <h2>Cargo® Demo</h2>
         </div>
 
-        <div class="col-groups">
+        <div class="col-groups col-b">
           <h2 class="subtle">Groups</h2>
           <b>Aliquam Faucibus Tellus</b><br>
           Vestibulum Ultricies<br>
@@ -367,7 +458,7 @@ ul{ margin:0; padding-left:1.5em; }
           </ul>
         </div>
 
-        <div class="col-point">
+        <div class="col-point col-c">
           <h2>Point</h2>
           <p>Euro tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Lectus quam id leo in vitae turpis massa. Cursus euismod quis viverra nibh cras. Nunc scelerisque viverra mauris in aliquam sem fringilla ut. Felis imperdiet proin fermentum leo vel orci porta. Purus in mollis nunc sed id. Scelerisque varius morbi enim nunc. Semper auctor neque vitae tempus quam pellentesque nec. Feugiat vivamus at augue eget. Urna id volutpat lacus laoreet non curabitur gravida. Habitant morbi tristique senectus et netus. Eget dolor morbi non arcu.</p>
           <p class="indent">Fames ac turpis egestas integer eget aliquet nibh praesent tristique. Quis hendrerit dolor magna eget. Nec sagittis aliquam malesuada bibendum arcu. Nibh ipsum consequat nisl vel pretium. Euro tincidunt tortor aliquam nulla facilisi cras fermentum odio eu. Lectus quam id leo in vitae turpis massa. Urna id volutpat lacus laoreet non curabitur gravida. Habitant morbi tristique senectus et netus. Eget dolor morbi non arcu.</p>
@@ -393,6 +484,26 @@ ul{ margin:0; padding-left:1.5em; }
 
 </div>
 
+<!-- =========================================================
+     LIGHTBOX — se abre con doble clic sobre cualquier imagen
+     de las galerías (.gallery img). Incluye flechas prev/next,
+     cierre con la X, con click afuera o con Escape, y un
+     contador + caption abajo a la izquierda.
+========================================================== -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lb-close" type="button" aria-label="Cerrar">×</button>
+  <button class="lb-prev" type="button" aria-label="Anterior">‹</button>
+  <button class="lb-next" type="button" aria-label="Siguiente">›</button>
+  <div class="lb-stage">
+    <img id="lightbox-img" src="" alt="">
+  </div>
+  <div class="lb-caption">
+    <span id="lb-index">00—0</span><br>
+    <span id="lb-alt">Placeholder Image</span><br>
+    <span>Cargo®</span>
+  </div>
+</div>
+
 <script>
 // Reloj digital de 24 horas, se actualiza cada segundo.
 function updateClock(){
@@ -403,6 +514,63 @@ function updateClock(){
 }
 updateClock();
 setInterval(updateClock, 1000);
+
+// Lightbox: doble clic en cualquier imagen de galería para ampliarla.
+(function(){
+  var galleryImgs = Array.prototype.slice.call(document.querySelectorAll('.gallery img'));
+  var lightbox = document.getElementById('lightbox');
+  var lbImg = document.getElementById('lightbox-img');
+  var lbIndex = document.getElementById('lb-index');
+  var lbAlt = document.getElementById('lb-alt');
+  var current = 0;
+
+  function pad2(n){ return n.toString().padStart(2,'0'); }
+
+  function update(){
+    var img = galleryImgs[current];
+    lbImg.src = img.src;
+    lbImg.alt = img.alt;
+    lbAlt.textContent = img.alt || 'Placeholder Image';
+    lbIndex.textContent = '00—' + (current + 1);
+  }
+
+  function open(i){
+    current = i;
+    update();
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function close(){
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  function next(){ current = (current + 1) % galleryImgs.length; update(); }
+  function prev(){ current = (current - 1 + galleryImgs.length) % galleryImgs.length; update(); }
+
+  galleryImgs.forEach(function(img, i){
+    img.addEventListener('dblclick', function(){ open(i); });
+  });
+
+  document.querySelector('.lb-close').addEventListener('click', close);
+  document.querySelector('.lb-next').addEventListener('click', next);
+  document.querySelector('.lb-prev').addEventListener('click', prev);
+
+  // Cerrar al hacer click fuera de la imagen (pero no en los botones)
+  lightbox.addEventListener('click', function(e){
+    if (e.target === lightbox) close();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (!lightbox.classList.contains('open')) return;
+    if (e.key === 'Escape') close();
+    if (e.key === 'ArrowRight') next();
+    if (e.key === 'ArrowLeft') prev();
+  });
+})();
 </script>
 </body>
 </html>
