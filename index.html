@@ -508,7 +508,7 @@ ul{ margin:0; padding-left:1.5em; }
 </div>
 
 <!-- =========================================================
-     LIGHTBOX — se abre con doble clic sobre cualquier imagen
+     LIGHTBOX — se abre con un clic sobre cualquier imagen
      de las galerías (.gallery img). Incluye flechas prev/next,
      cierre con la X, con click afuera o con Escape, y un
      contador + caption abajo a la izquierda.
@@ -538,7 +538,7 @@ function updateClock(){
 updateClock();
 setInterval(updateClock, 1000);
 
-// Lightbox: doble clic en cualquier imagen de galería para ampliarla.
+// Lightbox: un clic en cualquier imagen de galería para ampliarla.
 (function(){
   var galleryImgs = Array.prototype.slice.call(document.querySelectorAll('.gallery img'));
   var lightbox = document.getElementById('lightbox');
@@ -575,7 +575,7 @@ setInterval(updateClock, 1000);
   function prev(){ current = (current - 1 + galleryImgs.length) % galleryImgs.length; update(); }
 
   galleryImgs.forEach(function(img, i){
-    img.addEventListener('dblclick', function(){ open(i); });
+    img.addEventListener('click', function(){ open(i); });
   });
 
   document.querySelector('.lb-close').addEventListener('click', close);
