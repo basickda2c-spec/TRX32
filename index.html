@@ -224,6 +224,30 @@ ul{ margin:0; padding-left:1.5em; }
 }
 
 /* =========================================================
+   4.1) BANNER FULL-WIDTH (imagen o video 1920x1080)
+   Bloque horizontal a ancho completo de página, pensado para
+   ir entre bloques de proyecto. Mantiene proporción 16:9 y
+   recorta (object-fit: cover) para llenar el espacio sin
+   deformarse en ningún tamaño de pantalla.
+   Para usarlo: dejá SOLO el <img> o SOLO el <video> adentro
+   de .banner-media (el otro, borralo o comentalo).
+========================================================== */
+.banner{ padding: var(--page-pad); }
+.banner-media{
+  width:100%;
+  aspect-ratio: 1920 / 1080;
+  overflow:hidden;
+  background:#000;
+}
+.banner-media img,
+.banner-media video{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
    5) ABOUT
    ========================================================= */
 .about{ padding: var(--page-pad); padding-bottom: 6rem; }
@@ -454,8 +478,8 @@ ul{ margin:0; padding-left:1.5em; }
         </div>
       </div>
     </section>
-       
-       <!-- =========================================================
+
+    <!-- =========================================================
          PROYECTO 03
          Misma estructura que Project 01.
          "col-type" (Párrafo 3) usa col-b => alineado con .g-main.
@@ -492,6 +516,23 @@ ul{ margin:0; padding-left:1.5em; }
             <figcaption class="caption">Figure 2</figcaption>
           </figure>
         </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         BANNER FULL-WIDTH
+         Bloque horizontal (1920x1080) entre Project 03 y el
+         próximo bloque de proyecto. Poné SOLO uno de los dos:
+         el <video> (autoplay) o el <img>. El que no uses, borralo.
+    ========================================================== -->
+    <section class="banner" id="banner-01">
+      <hr>
+      <div class="banner-media">
+        <!-- Opción VIDEO (autoplay, sin sonido, en loop) -->
+        <video src="images/banner-01.mp4" width="1920" height="1080" autoplay muted loop playsinline data-alt="Banner"></video>
+
+        <!-- Opción IMAGEN — descomentá esta línea y borrá el <video> de arriba si preferís una imagen fija -->
+        <!-- <img src="images/banner-01.jpg" alt="Banner" width="1920" height="1080"> -->
       </div>
     </section>
 
